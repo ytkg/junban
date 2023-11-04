@@ -1,0 +1,49 @@
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <title>順番を決めるやつ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ruby-3_2-wasm-wasi@latest/dist/browser.script.iife.js"></script>
+    <script type="text/ruby">
+      require 'js'
+
+      document = JS.global[:document]
+
+      list = document.getElementById('list')
+      order = document.getElementById('order')
+      button = document.getElementById('button')
+
+      button.addEventListener('click') do
+        order[:innerHTML] = nil
+        names = list[:value].to_s.split("\n").reject(&:empty?)
+        names.shuffle.each do |name|
+          li = document.createElement('li')
+          li.append(document.createTextNode(name))
+          order.append(li)
+        end
+      end
+    </script>
+  </head>
+  <body>
+    <div class="p-5">
+      <h1 class="text-3xl font-bold">順番を決めるやつ</h1>
+      <div class="flex flex-row gap-4 py-3">
+        <div>
+          <div class="p-1">
+            <label for="list" class="block">発表者（改行区切り）:</label>
+            <textarea id="list" name="list" class="block p-1 border rounded" rows="7" cols="20"></textarea>
+          </div>
+          <div class="p-1">
+            <button id="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">シャッフル</button>
+          </div>
+        </div>
+        <div class="p-1">
+          <ol id="order" class="list-decimal list-inside text-xl"></ol>
+        </div>
+      </div>
+      <div>
+        <p>[<a class="text-blue-600 underline" href="https://github.com/ytkg/junban" target="_blank">ソースコード</a>]</p>
+      </div>
+    </div>
+  </body>
+</html>
